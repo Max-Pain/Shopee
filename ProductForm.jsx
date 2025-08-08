@@ -1,24 +1,28 @@
 // src/components/ProductForm.jsx
 import { useState, useEffect } from 'react';
 import { createProduct, updateProduct } from '../services/productService';
+import './ProductForm.css';
 
 export function ProductForm({ existing, onSaved }) {
-  // existing = { id, name, description, price, details } or null
   const [form, setForm] = useState({
     name: '',
     description: '',
     price: '',
-    details: ''
+    details: '',
+    quantity: ''
   });
 
   useEffect(() => {
-    if (existing) setForm(existing);
+    if (existing) {
+      setForm(existing);
+    }
   }, [existing]);
 
-  const handleChange = e =>
-    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
-  const handleSubmit = async e => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (existing) {
       await updateProduct(existing.id, form);
@@ -26,41 +30,63 @@ export function ProductForm({ existing, onSaved }) {
       await createProduct(form);
     }
     onSaved();
-    setForm({ name: '', description: '', price: '', details: '' });
-  };
+    setForm({ name: '', description: '', price: '', details: '', quantity: '' });
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="product-form" onSubmit={handleSubmit}>
+      <h2>{existing ? 'Edit Product' : 'Add Product'}</h2>
+
+      <label>Product Name</label>
       <input
+        type="text"
         name="name"
-        placeholder="Name"
         value={form.name}
         onChange={handleChange}
         required
+        placeholder="Enter product name"
       />
+
+      <label>Description</label>
       <textarea
         name="description"
-        placeholder="Description"
         value={form.description}
         onChange={handleChange}
+        required
+        placeholder="Enter short description"
       />
+
+      <label>Price</label>
       <input
-        name="price"
         type="number"
-        placeholder="Price"
+        name="price"
         value={form.price}
         onChange={handleChange}
         required
+        min="0"
+        placeholder="₱0.00"
       />
+
+      <label>Details</label>
       <textarea
         name="details"
-        placeholder="Details"
         value={form.details}
         onChange={handleChange}
+        placeholder="Optional details"
       />
-      <button type="submit">
-        {existing ? 'Update' : 'Create'}
-      </button>
+
+      <label>Quantity</label>
+      <input
+        type="number"
+        name="quantity"
+        value={form.quantity}
+        onChange={handleChange}
+        required
+        min="0"
+        placeholder="0"
+      />
+
+      <button type="submit">{existing ? 'Update' : 'Add Product'}</button>
     </form>
   );
 }
