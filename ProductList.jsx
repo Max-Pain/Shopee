@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getAllProducts, deleteProduct } from '../services/productService';
 import { ProductForm } from './ProductForm';
+import { useCart } from '../contexts/CartContext';
 import './ProductList.css';
 
-export default function ProductList({ onAddToCart }) {
+export default function ProductList() {
   const [products, setProducts] = useState([]);
+  
   const [editing, setEditing] = useState(null);
+  const { dispatch } = useCart();
 
   const load = async () => {
     const items = await getAllProducts();
@@ -32,13 +35,21 @@ export default function ProductList({ onAddToCart }) {
             <small>{p.details}</small>
             <div className="product-buttons">
               <button className="edit" onClick={() => setEditing(p)}>Edit</button>
-              <button className="delete" onClick={async () => {
-                await deleteProduct(p.id);
-                load();
-              }}>Delete</button>
-              {onAddToCart && (
-                <button className="cart" onClick={() => onAddToCart(p)}>Add to Cart</button>
-              )}
+              <button
+                className="delete"
+                onClick={async () => {
+                  await deleteProduct(p.id);
+                  load();
+                }}
+              >
+                Delete
+              </button>
+              <button
+                className="cart"
+                onClick={() => dispatch({ type: 'ADD_TO_CART', payload: p })}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}
