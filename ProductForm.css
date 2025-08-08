@@ -1,0 +1,56 @@
+/* src/components/ProductForm.css */
+.product-form {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-form h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #f53d2d;
+  text-align: center;
+}
+
+.product-form label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.product-form input,
+.product-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.product-form input:focus,
+.product-form textarea:focus {
+  border-color: #f53d2d;
+  outline: none;
+}
+
+.product-form button {
+  background-color: #f53d2d;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-form button:hover {
+  background-color: #e03a24;
+}
