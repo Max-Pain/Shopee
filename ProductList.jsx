@@ -1,9 +1,9 @@
-// src/components/ProductList.jsx
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAllProducts, deleteProduct } from '../services/productService';
 import { ProductForm } from './ProductForm';
+import './ProductList.css';
 
-export function ProductList() {
+export default function ProductList({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [editing, setEditing] = useState(null);
 
@@ -23,24 +23,26 @@ export function ProductList() {
       <ProductForm existing={editing} onSaved={load} />
 
       <h2>All Products</h2>
-      <ul>
+      <div className="product-grid">
         {products.map(p => (
-          <li key={p.id}>
-            <strong>{p.name}</strong> — ${p.price}
-            <button onClick={() => setEditing(p)}>Edit</button>
-            <button
-              onClick={async () => {
+          <div key={p.id} className="product-card">
+            <h3>{p.name}</h3>
+            <p>{p.description}</p>
+            <p className="product-tags">₱{p.price} | Stocks: {p.quantity || 0}</p>
+            <small>{p.details}</small>
+            <div className="product-buttons">
+              <button className="edit" onClick={() => setEditing(p)}>Edit</button>
+              <button className="delete" onClick={async () => {
                 await deleteProduct(p.id);
                 load();
-              }}
-            >
-              Delete
-            </button>
-            <p>{p.description}</p>
-            <small>{p.details}</small>
-          </li>
+              }}>Delete</button>
+              {onAddToCart && (
+                <button className="cart" onClick={() => onAddToCart(p)}>Add to Cart</button>
+              )}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
