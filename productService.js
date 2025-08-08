@@ -6,13 +6,13 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const productsCol = collection(db, 'products');
 
 export async function createProduct(data) {
-  // data: { name, description, price, details }
   const ref = await addDoc(productsCol, {
     ...data,
     createdAt: Date.now()
@@ -33,4 +33,21 @@ export async function updateProduct(id, data) {
 export async function deleteProduct(id) {
   const ref = doc(db, 'products', id);
   await deleteDoc(ref);
+}
+
+// ✅ NEW: Deduct quantity after checkout
+export async function deductStock(productId, quantityToDeduct) {
+  const productRef = doc(db, 'products', productId);
+  const productSnap = await getDoc(productRef);
+
+  if (productSnap.exists()) {
+    const currentQuantity = productSnap.data().quantity || 0;
+    const newQuantity = Math.max(currentQuantity - quantityToDeduct, 0);
+
+    await updateDoc(productRef, {
+      quantity: newQuantity,
+    });
+  } else {
+    throw new Error('Product not found');
+  }
 }
