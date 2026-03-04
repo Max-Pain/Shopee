@@ -53,6 +53,6 @@ Database: MySQL / MongoDB / PostgreSQL
 
 Palacio Radge Raven – Developer and Creator of Shoppe
 
-GitHub: [your-github-link]
+GitHub: [https://github.com/Max-Pain]
 
-Email: [your-email] (optional)
+Email: [goomonster33@gmail.com] 
